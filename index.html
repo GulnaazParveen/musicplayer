@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>music player</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="design.css">
+</head>
+<body>
+    <div class="main_div">
+        <div class="music_container">
+            <h2 id="title_1"> party to shuru hui h</h2>
+            <h3 id="expression">mood change</h3>
+            <div class="image_container">
+                <img src="./images/1.jpg" alt=""> 
+            </div>
+             <audio src="./songs/1.mp3"></audio> 
+            <!-- when use control in above audio that mean icon show audio   and control click play and click pause -->
+            <div class="music_control">
+                <i class="fa-solid fa-2x fa-backward" id="previous" title="pre"></i>
+                <i class="fa-solid  main_button fa-2x fa-play" id="play" title="play"></i>
+                <i class="fa-solid  fa-2x fa-forward" id="next" title="next"></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        const music=document.querySelector('audio');
+        const img=document.querySelector('img');
+        const play=document.getElementById('play');
+        const title_1=document.getElementById('title_1');
+        const previous=document.getElementById('previous');
+        const next=document.getElementById('next');
+        
+        // array of obejet for change song name and song
+       const changing=[
+        {  numbring:1,name:"party shuru hui h",songimage:"images/1.jpg" },
+        { numbring:2,name:"tu aake dekhle",songimage:"images/2.jpg"},
+        {  numbring:3,name:"maan meri jaan",songimage:"images/3.jpg"},
+       ]
+
+    //    varible
+
+    // play music for play icon
+    let isPlaying=false;
+    const playMusic=()=>{
+        isPlaying=true;
+        music.play();
+       play.classList.replace('fa-play','fa-pause');
+       img.classList.add("anime");
+// alag se animation kro aur jis me lagana h us ko taget kr ke classlist deke add kro us animation kio aise v karskte h   
+    };
+    const pauseMusic =()=>{
+         isPlaying=false;
+        music.pause();
+       play.classList.replace("fa-pause","fa-play");
+       img.classList.remove("anime");
+    };
+    play.addEventListener('click',()=>{
+        if(isPlaying){
+            pauseMusic();
+        }
+        else{
+            playMusic();
+        }
+    });
+    // changing
+    const loadsong = (changing) =>{
+     title_1.textContent=changing.name;
+     music.src =`songs/${changing.numbring}.mp3`
+     img.src=`images/${changing.numbring}.jpg`
+    } ;
+     songindex=0;
+    const nextSong = () =>{
+        //  songindex=(songindex+1)%changing.length;
+        if(songindex>=changing.length){
+             songindex=0;
+          }
+          else{
+             songindex+=1;
+           }
+        loadsong(changing[songindex]);
+        playMusic();
+    };
+     next.addEventListener("click", nextSong);
+
+    //  previous song
+       const prevsong = () =>{
+        if(songindex<=0){
+            songindex=changing.length;
+        }
+        else{
+            songindex-=1;
+        }
+        loadsong(changing[songindex]);
+        playMusic();
+     };
+     previous.addEventListener('click',prevsong);
+
+    </script>
+</body>
+</html>
